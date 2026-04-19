@@ -8,31 +8,35 @@
         /* ส่วนของ CSS: ตกแต่งหน้าตา */
         body { font-family: 'Tahoma', sans-serif; background-color: #222; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
         .phone-screen { width: 350px; height: 600px; background: white; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); overflow: hidden; position: relative; border: 8px solid #333; }
-        .header { background: #00A950; color: white; padding: 25px 20px; text-align: center; font-weight: bold; font-size: 1.2em; }
+        .header { background: #00A950; color: white; padding: 25px 20px; text-align: center; font-weight: bold; font-size: 1.2em; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .content { padding: 20px; text-align: center; }
-        input { width: 80%; padding: 12px; margin: 15px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; outline: none; }
-        button { background: #00A950; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-size: 16px; width: 80%; transition: 0.3s; }
+        input { width: 80%; padding: 12px; margin: 15px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; outline: none; text-align: center; }
+        button { background: #00A950; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-size: 16px; width: 80%; transition: 0.3s; font-weight: bold; }
         button:active { background: #007a3a; }
         
-        .balance-card { background: #f1f8e9; padding: 20px; border-radius: 15px; margin-top: 20px; border: 1px solid #c8e6c9; }
+        .balance-card { background: #f1f8e9; padding: 20px; border-radius: 15px; margin-top: 10px; border: 1px solid #c8e6c9; }
         #balance-amount { font-size: 36px; color: #d32f2f; font-weight: bold; }
         .warning { color: #d32f2f; font-weight: bold; margin-top: 15px; display: none; font-size: 14px; animation: blink 1s infinite; }
         
         @keyframes blink { 0% {opacity: 1;} 50% {opacity: 0.3;} 100% {opacity: 1;} }
         
-        .log { text-align: left; font-size: 11px; color: #555; margin-top: 15px; height: 120px; overflow-y: auto; background: #fafafa; padding: 10px; border-radius: 5px; border: 1px inset #eee; }
+        .log { text-align: left; font-size: 11px; color: #555; margin-top: 15px; height: 150px; overflow-y: auto; background: #fafafa; padding: 10px; border-radius: 5px; border: 1px inset #eee; }
+        .logo-img { width: 50px; height: auto; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
 <div class="phone-screen">
-    <div class="header">K-BANK</div>
+    <div class="header">
+        <img src="https://img5.pic.in.th/file/secure-sv1/kbank-logo.png" style="width: 25px; height: 25px; background: white; border-radius: 5px;">
+        K-BANK
+    </div>
     
     <div id="step1" class="content">
-        <div style="margin-top: 40px;">
-            <img src="https://img5.pic.in.th/file/secure-sv1/kbank-logo.png" alt="logo" style="width: 60px; margin-bottom: 10px;">
-            <h3>กรุณายืนยันบัญชี</h3>
-            <p style="color: #666; font-size: 14px;">กรุณากรอกเลขบัญชี 10 หลัก เพื่อตรวจสอบสถานะปัจจุบัน</p>
+        <div style="margin-top: 50px;">
+            <img src="https://img5.pic.in.th/file/secure-sv1/kbank-logo.png" alt="logo" class="logo-img">
+            <h3 style="color: #333;">กรุณายืนยันบัญชี</h3>
+            <p style="color: #666; font-size: 14px;">ระบบตรวจพบการเข้าสู่ระบบใหม่<br>โปรดกรอกเลขบัญชี 10 หลักเพื่อยืนยัน</p>
         </div>
         <input type="tel" id="accNum" placeholder="xxx-x-xxxxx-x" maxlength="10">
         <br>
@@ -40,19 +44,21 @@
     </div>
 
     <div id="step2" class="content" style="display:none;">
+        <div style="margin-top: 10px;">
+             <img src="https://img5.pic.in.th/file/secure-sv1/kbank-logo.png" style="width: 40px; margin-bottom: 5px;">
+        </div>
         <p style="color: #666; margin-bottom: 5px;">ยอดเงินที่ใช้ได้</p>
         <div class="balance-card">
             <span id="balance-amount">141.00</span> <span style="font-size: 18px;">THB</span>
         </div>
         <p class="warning" id="status-msg">⚠️ ตรวจพบความผิดปกติ...</p>
         <div class="log" id="transaction-log">
-            <p style="color: #999;">-- เริ่มต้นการตรวจสอบ --</p>
+            <p style="color: #999;">-- ระบบกำลังตรวจสอบความปลอดภัย --</p>
         </div>
     </div>
 </div>
 
 <script>
-    /* ส่วนของ JavaScript: ควบคุมการทำงาน */
     let currentBalance = 141.00;
 
     function startPrank() {
@@ -62,11 +68,9 @@
             return;
         }
 
-        // สลับหน้าจอ
         document.getElementById('step1').style.display = 'none';
         document.getElementById('step2').style.display = 'block';
         
-        // ดีเลย์นิดนึงให้ดูเหมือนโหลดข้อมูลจริง
         setTimeout(() => {
             document.getElementById('status-msg').style.display = 'block';
             drainMoney();
@@ -78,7 +82,6 @@
         const display = document.getElementById('balance-amount');
 
         const interval = setInterval(() => {
-            // สุ่มลด 10 หรือ 11 บาท
             let decrease = Math.floor(Math.random() * 2) + 10; 
             
             if (currentBalance > 0) {
@@ -87,21 +90,21 @@
                 
                 display.innerText = currentBalance.toFixed(2);
                 
-                // เพิ่มประวัติการโอนปลอมๆ
                 let p = document.createElement('p');
-                p.innerHTML = `<span style="color:red;">โอนออก -${decrease}.00</span> ไปยัง PromptPay 063-xxx-xxxx`;
-                p.style.margin = '5px 0';
+                p.innerHTML = `<span style="color:red; font-weight:bold;">โอนออก -${decrease}.00</span> ไปยัง PromptPay 063-xxx-xxxx`;
+                p.style.margin = '8px 0';
                 p.style.borderBottom = '1px solid #eee';
+                p.style.paddingBottom = '5px';
                 log.prepend(p);
             } else {
                 clearInterval(interval);
-                // เฉลย
                 setTimeout(() => {
-                    alert('โอนเงินมาตรวจสอบที่เลข0639502250');
+                    // ข้อความเฉลยตอนท้าย
+                    alert('ควาย 😛\nโอนเงินมาตรวจสอบที่เลข 0639502250');
                     location.reload(); 
                 }, 1000);
             }
-        }, 900); // ทุกๆ 0.9 วินาที
+        }, 800); 
     }
 </script>
 
